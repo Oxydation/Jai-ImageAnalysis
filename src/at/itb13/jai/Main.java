@@ -22,7 +22,7 @@ public class Main {
 
         kernel = new KernelJAI(3, 3, kernelMatrix);
 
-        PlanarImage image = JAI.create("fileload", "C:\\lehre\\ml\\hastieBook\\lena512.jpg");
+        PlanarImage image = JAI.create("fileload", "loetstellen.jpg");
 
         // Get some information about the image
         String imageInfo =
