@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="Catalano">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Android.Image.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Fuzzy.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Graph.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Image.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.IO.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.MachineLearning.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Math.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Neuro.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Signal.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Statistics.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/catalano/Catalano.Vision.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

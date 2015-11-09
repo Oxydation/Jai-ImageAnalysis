@@ -8,6 +8,7 @@ import javax.media.jai.PlanarImage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.renderable.ParameterBlock;
+import java.io.File;
 
 public class Main {
 
@@ -22,7 +23,7 @@ public class Main {
 
         kernel = new KernelJAI(3, 3, kernelMatrix);
 
-        PlanarImage image = JAI.create("fileload", "loetstellen.jpg");
+        PlanarImage image = JAI.create("fileload", new File("loetstellen.jpg"));
 
         // Get some information about the image
         String imageInfo =

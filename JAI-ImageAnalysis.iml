@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jai_codec" level="project" />
+    <orderEntry type="library" name="mlibwrapper_jai" level="project" />
+    <orderEntry type="library" name="Catalano" level="project" />
   </component>
 </module>
