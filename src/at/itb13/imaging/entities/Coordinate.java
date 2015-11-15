@@ -1,4 +1,4 @@
-package at.itb13.jai.entities;
+package at.itb13.imaging.entities;
 
 /**
  * Created by Mathias on 09.11.2015.

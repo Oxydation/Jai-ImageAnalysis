@@ -2,9 +2,9 @@
  * all other pixels in the image are expected to have a pixel value < 255
  * use this filter adapting eventually the package name 
  */
-package at.itb13.jai.filter;
+package at.itb13.imaging.filter;
 
-import at.itb13.jai.entities.Coordinate;
+import at.itb13.imaging.entities.Coordinate;
 import at.itb13.pipesandfilter.filter.DataEnrichmentFilter;
 import at.itb13.pipesandfilter.interfaces.Readable;
 import at.itb13.pipesandfilter.interfaces.Writeable;

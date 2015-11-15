@@ -1,6 +1,6 @@
-package at.itb13.jai;
+package at.itb13.imaging;
 
-import at.itb13.jai.enumerations.Mode;
+import at.itb13.imaging.enumerations.Mode;
 import at.itb13.pipesandfilter.filter.ImageSource;
 
 /**

@@ -1,4 +1,4 @@
-package at.itb13.jai.entities;
+package at.itb13.imaging.entities;
 
 import Catalano.Imaging.FastBitmap;
 

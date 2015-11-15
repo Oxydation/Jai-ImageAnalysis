@@ -2,7 +2,7 @@ package at.itb13.pipesandfilter.filter;
 
 
 import Catalano.Imaging.FastBitmap;
-import at.itb13.jai.entities.PicturePack;
+import at.itb13.imaging.entities.PicturePack;
 import at.itb13.pipesandfilter.interfaces.Readable;
 import at.itb13.pipesandfilter.interfaces.Writeable;
 
