@@ -2,7 +2,7 @@
   <artifact type="jar" name="JAI-ImageAnalysis:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/JAI_ImageAnalysis_jar</output-path>
     <root id="archive" name="JAI-ImageAnalysis.jar">
-      <element id="module-output" name="JAI-ImageAnalysis" />
+      <element id="module-output" name="ImageAnalysis" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/jai/jai_codec.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/jai/jai_core.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/jai/mlibwrapper_jai.jar" path-in-jar="/" />

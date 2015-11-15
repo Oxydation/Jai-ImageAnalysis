@@ -21,11 +21,12 @@ public class ImageProcessor {
     public void processImage(Mode mode) {
         switch (mode) {
             case PULL:
+                // Pull from source to target
                 break;
 
             case PUSH:
-                //TODO
-                ImageSource is = new ImageSource(_sourceFile, );
+                // Push from source to target
+                ImageSource is = new ImageSource(_sourceFile);
                 break;
         }
     }
