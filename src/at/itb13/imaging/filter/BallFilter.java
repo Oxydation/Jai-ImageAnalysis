@@ -1,5 +1,6 @@
 package at.itb13.imaging.filter;
 
+import Catalano.Fuzzy.CentroidDefuzzifier;
 import Catalano.Imaging.Filters.Closing;
 import Catalano.Imaging.Filters.Opening;
 import at.itb13.imaging.ImageProcessor;

@@ -7,6 +7,16 @@ public class Coordinate {
     private int _x;
     private int _y;
 
+    private boolean _isInTolerance;
+
+    public boolean isInTolerance() {
+        return _isInTolerance;
+    }
+
+    public void setIsInTolerance(boolean isInTolerance) {
+        _isInTolerance = isInTolerance;
+    }
+
     public int getX() {
         return _x;
     }
@@ -27,7 +37,10 @@ public class Coordinate {
     }
 
     public Coordinate(int x, int y) {
+        _x = x;
+        _y = y;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -38,5 +51,10 @@ public class Coordinate {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("X: %s; Y: %s | In tolerance: %b", _x, _y, _isInTolerance);
     }
 }

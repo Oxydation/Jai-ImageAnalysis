@@ -1,6 +1,7 @@
 package at.itb13.imaging;
 
 import Catalano.Imaging.FastBitmap;
+import at.itb13.imaging.entities.Coordinate;
 import at.itb13.imaging.entities.PicturePack;
 import at.itb13.imaging.enumerations.Mode;
 import at.itb13.imaging.filter.*;
@@ -9,6 +10,8 @@ import at.itb13.pipesandfilter.interfaces.Writeable;
 import at.itb13.pipesandfilter.pipes.Pipe;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.util.LinkedList;
 
 /**
  * Created by Mathias on 09.11.2015.
@@ -34,8 +37,31 @@ public class ImageProcessor {
             case PUSH:
                 // Push from source to target
 
-                DataSink dataSink = new DataSink("output.png");
-                Pipe<PicturePack> pipe4 = new Pipe<>( dataSink);
+                DataSink dataSink = null;
+                try {
+                    dataSink = new DataSink("output.txt");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                LinkedList<Coordinate> nominalCoordiantes = new LinkedList<>();
+                nominalCoordiantes.add(new Coordinate(10, 80));
+                nominalCoordiantes.add(new Coordinate(75, 80));
+                nominalCoordiantes.add(new Coordinate(135, 80));
+                nominalCoordiantes.add(new Coordinate(200, 80));
+                nominalCoordiantes.add(new Coordinate(265, 80));
+                nominalCoordiantes.add(new Coordinate(330, 80));
+                nominalCoordiantes.add(new Coordinate(395, 80));
+                int tolerance = 5;
+
+                Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>(dataSink);
+                QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Writeable<LinkedList<Coordinate>>) pipe6, nominalCoordiantes);
+                qsCentroidsFilter.setxTolerance(tolerance);
+                qsCentroidsFilter.setyTolerance(tolerance);
+
+                Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Writeable<LinkedList<Coordinate>>) qsCentroidsFilter);
+                CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe5);
+                Pipe<PicturePack> pipe4 = new Pipe<>((Writeable<PicturePack>) calcCentroidsFilter);
                 BallFilter ballFilter = new BallFilter((Writeable<PicturePack>) pipe4);
                 Pipe<PicturePack> pipe3 = new Pipe<>((Writeable<PicturePack>) ballFilter);
                 MedianFilter medianFilter = new MedianFilter((Writeable<PicturePack>) pipe3);

@@ -29,10 +29,10 @@ public class ROIFilter extends DataTransformationFilter<PicturePack> {
 
     @Override
     protected void process(PicturePack entity) {
-        FastBitmap roi = new FastBitmap(entity.getOriginal().toBufferedImage().getSubimage(0, 40, entity.getOriginal().getWidth(), entity.getOriginal().getHeight() / 3));
+        FastBitmap roi = new FastBitmap(entity.getOriginal().toBufferedImage().getSubimage(0, 60, entity.getOriginal().getWidth(), entity.getOriginal().getHeight() / 4));
 
         entity.setEdited(roi);
-        entity.setCoordinate(new Coordinate(0, 40));
+        entity.setCoordinate(new Coordinate(0, 60));
         ImageProcessor.showImage(entity.getEdited(), "ROI");
     }
 }
