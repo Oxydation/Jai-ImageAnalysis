@@ -28,4 +28,15 @@ public class Coordinate {
 
     public Coordinate(int x, int y) {
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Coordinate) {
+            Coordinate coordinate = (Coordinate) obj;
+            if (coordinate.getX() == this.getX() && coordinate.getY() == this.getY()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
