@@ -1,6 +1,7 @@
 package at.itb13.imaging.filter;
 
 import at.itb13.imaging.entities.Coordinate;
+import at.itb13.pipesandfilter.interfaces.Readable;
 import at.itb13.pipesandfilter.interfaces.Writeable;
 
 import java.io.*;
@@ -10,9 +11,25 @@ import java.util.List;
 /**
  * Created by Mathias on 16.11.2015.
  */
-public class DataSink implements Writeable<LinkedList<Coordinate>> {
+public class DataSink implements Writeable<LinkedList<Coordinate>>, Runnable {
     public String _targetFile;
+    public Readable<LinkedList<Coordinate>> _readable;
+
+    @Override
+    public void run() {
+        try {
+            write(_readable.read());
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Writer _writer;
+
+    public DataSink(String targetFile, Readable<LinkedList<Coordinate>> readable) {
+        _targetFile = targetFile;
+        _readable = readable;
+    }
 
     public DataSink(String targetFile) throws IOException {
         _targetFile = targetFile;
@@ -29,7 +46,7 @@ public class DataSink implements Writeable<LinkedList<Coordinate>> {
 
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 try {
                     _writer.flush();
                     _writer.close();

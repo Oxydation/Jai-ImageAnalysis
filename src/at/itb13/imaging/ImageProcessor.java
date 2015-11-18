@@ -6,6 +6,7 @@ import at.itb13.imaging.entities.PicturePack;
 import at.itb13.imaging.enumerations.Mode;
 import at.itb13.imaging.filter.*;
 import at.itb13.pipesandfilter.filter.ImageSource;
+import at.itb13.pipesandfilter.interfaces.Readable;
 import at.itb13.pipesandfilter.interfaces.Writeable;
 import at.itb13.pipesandfilter.pipes.Pipe;
 
@@ -29,30 +30,56 @@ public class ImageProcessor {
     }
 
     public void processImage(Mode mode) {
+
+        LinkedList<Coordinate> nominalCoordiantes = new LinkedList<>();
+        nominalCoordiantes.add(new Coordinate(10, 80));
+        nominalCoordiantes.add(new Coordinate(75, 80));
+        nominalCoordiantes.add(new Coordinate(135, 80));
+        nominalCoordiantes.add(new Coordinate(200, 80));
+        nominalCoordiantes.add(new Coordinate(265, 80));
+        nominalCoordiantes.add(new Coordinate(330, 80));
+        nominalCoordiantes.add(new Coordinate(395, 80));
+        int tolerance = 5;
+
         switch (mode) {
-            case PULL:
+            case PULL: {
                 // Pull from source to target
+                ImageSource is = new ImageSource(_sourceFile);
+                Pipe<PicturePack> pipe = new Pipe<>(is);
+                ROIFilter roiFilter = new ROIFilter((Readable<PicturePack>) pipe);
+                Pipe<PicturePack> pipe1 = new Pipe<>((Readable<PicturePack>) roiFilter);
+                ThresholdFilter thresholdFilter = new ThresholdFilter((Readable<PicturePack>) pipe1);
+
+                Pipe<PicturePack> pipe2 = new Pipe<>((Readable<PicturePack>) thresholdFilter);
+                MedianFilter medianFilter = new MedianFilter((Readable<PicturePack>) pipe2);
+                Pipe<PicturePack> pipe3 = new Pipe<>((Readable<PicturePack>) medianFilter);
+
+                BallFilter ballFilter = new BallFilter((Readable<PicturePack>) pipe3);
+                Pipe<PicturePack> pipe4 = new Pipe<>((Readable<PicturePack>) ballFilter);
+                CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe4);
+                Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Readable<LinkedList<Coordinate>>) calcCentroidsFilter);
+
+                QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Readable<LinkedList<Coordinate>>) pipe5, nominalCoordiantes);
+                qsCentroidsFilter.setxTolerance(tolerance);
+                qsCentroidsFilter.setyTolerance(tolerance);
+
+                Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>((Readable<LinkedList<Coordinate>>) qsCentroidsFilter);
+                DataSink dataSink = new DataSink("output.txt", pipe6);
+
+                Thread thread = new Thread(dataSink);
+                thread.start();
+
                 break;
+            }
 
-            case PUSH:
+            case PUSH: {
                 // Push from source to target
-
                 DataSink dataSink = null;
                 try {
                     dataSink = new DataSink("output.txt");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                LinkedList<Coordinate> nominalCoordiantes = new LinkedList<>();
-                nominalCoordiantes.add(new Coordinate(10, 80));
-                nominalCoordiantes.add(new Coordinate(75, 80));
-                nominalCoordiantes.add(new Coordinate(135, 80));
-                nominalCoordiantes.add(new Coordinate(200, 80));
-                nominalCoordiantes.add(new Coordinate(265, 80));
-                nominalCoordiantes.add(new Coordinate(330, 80));
-                nominalCoordiantes.add(new Coordinate(395, 80));
-                int tolerance = 5;
 
                 Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>(dataSink);
                 QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Writeable<LinkedList<Coordinate>>) pipe6, nominalCoordiantes);
@@ -76,6 +103,7 @@ public class ImageProcessor {
                 thread.run();
 
                 break;
+            }
         }
     }
 
