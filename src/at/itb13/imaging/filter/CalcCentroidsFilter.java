@@ -37,7 +37,7 @@ public class CalcCentroidsFilter extends DataEnrichmentFilter<PicturePack, Linke
         List<Blob> blobList = blobDetection.ProcessImage(nextVal.getEdited());
 
         for (Blob blob : blobList) {
-            entity.add(new Coordinate(blob.getCenter().x + nextVal.getCoordinate().getX(), blob.getCenter().y + + nextVal.getCoordinate().getY()));
+            entity.add(new Coordinate(blob.getCenter().y + nextVal.getCoordinate().getX(), blob.getCenter().x + + nextVal.getCoordinate().getY()));
         }
         return true;
     }

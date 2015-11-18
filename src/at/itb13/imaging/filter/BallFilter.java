@@ -35,6 +35,8 @@ public class BallFilter extends DataTransformationFilter<PicturePack> {
         Opening opening = new Opening(_maskSize);
         opening.applyInPlace(entity.getEdited());
 
+        // Save image to file
+        entity.getEdited().saveAsPNG("ballfilter_result.png");
         ImageProcessor.showImage(entity.getEdited(), "Ball");
     }
 
