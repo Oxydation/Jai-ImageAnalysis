@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ImageAnalysis:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ImageAnalysis_jar</output-path>
+    <root id="archive" name="ImageAnalysis.jar">
+      <element id="module-output" name="ImageAnalysis" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Core.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Fuzzy.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Graph.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Image.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.IO.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.MachineLearning.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Math.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Neuro.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Signal.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Statistics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Vision.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
