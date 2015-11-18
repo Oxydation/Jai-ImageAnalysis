@@ -29,7 +29,7 @@ public class ImageProcessor {
         _sourceFile = sourceFile;
     }
 
-    public void processImage(Mode mode) {
+    public void processImage(Mode mode, boolean isThreaded) {
 
         LinkedList<Coordinate> nominalCoordiantes = new LinkedList<>();
         nominalCoordiantes.add(new Coordinate(10, 80));
@@ -43,64 +43,73 @@ public class ImageProcessor {
 
         switch (mode) {
             case PULL: {
-                // Pull from source to target
-                ImageSource is = new ImageSource(_sourceFile);
-                Pipe<PicturePack> pipe = new Pipe<>(is);
-                ROIFilter roiFilter = new ROIFilter((Readable<PicturePack>) pipe);
-                Pipe<PicturePack> pipe1 = new Pipe<>((Readable<PicturePack>) roiFilter);
-                ThresholdFilter thresholdFilter = new ThresholdFilter((Readable<PicturePack>) pipe1);
+                if(!isThreaded){
+                    // Pull from source to target
+                    ImageSource is = new ImageSource(_sourceFile);
+                    Pipe<PicturePack> pipe = new Pipe<>(is);
+                    ROIFilter roiFilter = new ROIFilter((Readable<PicturePack>) pipe);
+                    Pipe<PicturePack> pipe1 = new Pipe<>((Readable<PicturePack>) roiFilter);
+                    ThresholdFilter thresholdFilter = new ThresholdFilter((Readable<PicturePack>) pipe1);
 
-                Pipe<PicturePack> pipe2 = new Pipe<>((Readable<PicturePack>) thresholdFilter);
-                MedianFilter medianFilter = new MedianFilter((Readable<PicturePack>) pipe2);
-                Pipe<PicturePack> pipe3 = new Pipe<>((Readable<PicturePack>) medianFilter);
+                    Pipe<PicturePack> pipe2 = new Pipe<>((Readable<PicturePack>) thresholdFilter);
+                    MedianFilter medianFilter = new MedianFilter((Readable<PicturePack>) pipe2);
+                    Pipe<PicturePack> pipe3 = new Pipe<>((Readable<PicturePack>) medianFilter);
 
-                BallFilter ballFilter = new BallFilter((Readable<PicturePack>) pipe3);
-                Pipe<PicturePack> pipe4 = new Pipe<>((Readable<PicturePack>) ballFilter);
-                CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe4);
-                Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Readable<LinkedList<Coordinate>>) calcCentroidsFilter);
+                    BallFilter ballFilter = new BallFilter((Readable<PicturePack>) pipe3);
+                    Pipe<PicturePack> pipe4 = new Pipe<>((Readable<PicturePack>) ballFilter);
+                    CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe4);
+                    Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Readable<LinkedList<Coordinate>>) calcCentroidsFilter);
 
-                QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Readable<LinkedList<Coordinate>>) pipe5, nominalCoordiantes);
-                qsCentroidsFilter.setxTolerance(tolerance);
-                qsCentroidsFilter.setyTolerance(tolerance);
+                    QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Readable<LinkedList<Coordinate>>) pipe5, nominalCoordiantes);
+                    qsCentroidsFilter.setxTolerance(tolerance);
+                    qsCentroidsFilter.setyTolerance(tolerance);
 
-                Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>((Readable<LinkedList<Coordinate>>) qsCentroidsFilter);
-                DataSink dataSink = new DataSink("output.txt", pipe6);
+                    Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>((Readable<LinkedList<Coordinate>>) qsCentroidsFilter);
+                    DataSink dataSink = new DataSink("output.txt", pipe6);
 
-                Thread thread = new Thread(dataSink);
-                thread.start();
+                    Thread thread = new Thread(dataSink);
+                    thread.start();
+                }else{
+
+                }
 
                 break;
             }
 
             case PUSH: {
-                // Push from source to target
-                DataSink dataSink = null;
-                try {
-                    dataSink = new DataSink("output.txt");
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                if(!isThreaded){
+                    // Push from source to target
+                    DataSink dataSink = null;
+                    try {
+                        dataSink = new DataSink("output.txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>(dataSink);
+                    QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Writeable<LinkedList<Coordinate>>) pipe6, nominalCoordiantes);
+                    qsCentroidsFilter.setxTolerance(tolerance);
+                    qsCentroidsFilter.setyTolerance(tolerance);
+
+                    Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Writeable<LinkedList<Coordinate>>) qsCentroidsFilter);
+                    CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe5);
+                    Pipe<PicturePack> pipe4 = new Pipe<>((Writeable<PicturePack>) calcCentroidsFilter);
+                    BallFilter ballFilter = new BallFilter((Writeable<PicturePack>) pipe4);
+                    Pipe<PicturePack> pipe3 = new Pipe<>((Writeable<PicturePack>) ballFilter);
+                    MedianFilter medianFilter = new MedianFilter((Writeable<PicturePack>) pipe3);
+                    Pipe<PicturePack> pipe2 = new Pipe<>((Writeable<PicturePack>) medianFilter);
+                    ThresholdFilter thresholdFilter = new ThresholdFilter((Writeable<PicturePack>) pipe2);
+                    Pipe<PicturePack> pipe1 = new Pipe<>((Writeable<PicturePack>) thresholdFilter);
+                    ROIFilter roiFilter = new ROIFilter((Writeable<PicturePack>) pipe1);
+                    Pipe<PicturePack> pipe = new Pipe<>((Writeable<PicturePack>) roiFilter);
+                    ImageSource is = new ImageSource(_sourceFile, pipe);
+
+                    Thread thread = new Thread(is);
+                    thread.run();
+                }else{
+
                 }
-
-                Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>(dataSink);
-                QSCentroidsFilter qsCentroidsFilter = new QSCentroidsFilter((Writeable<LinkedList<Coordinate>>) pipe6, nominalCoordiantes);
-                qsCentroidsFilter.setxTolerance(tolerance);
-                qsCentroidsFilter.setyTolerance(tolerance);
-
-                Pipe<LinkedList<Coordinate>> pipe5 = new Pipe<>((Writeable<LinkedList<Coordinate>>) qsCentroidsFilter);
-                CalcCentroidsFilter calcCentroidsFilter = new CalcCentroidsFilter(pipe5);
-                Pipe<PicturePack> pipe4 = new Pipe<>((Writeable<PicturePack>) calcCentroidsFilter);
-                BallFilter ballFilter = new BallFilter((Writeable<PicturePack>) pipe4);
-                Pipe<PicturePack> pipe3 = new Pipe<>((Writeable<PicturePack>) ballFilter);
-                MedianFilter medianFilter = new MedianFilter((Writeable<PicturePack>) pipe3);
-                Pipe<PicturePack> pipe2 = new Pipe<>((Writeable<PicturePack>) medianFilter);
-                ThresholdFilter thresholdFilter = new ThresholdFilter((Writeable<PicturePack>) pipe2);
-                Pipe<PicturePack> pipe1 = new Pipe<>((Writeable<PicturePack>) thresholdFilter);
-                ROIFilter roiFilter = new ROIFilter((Writeable<PicturePack>) pipe1);
-                Pipe<PicturePack> pipe = new Pipe<>((Writeable<PicturePack>) roiFilter);
-                ImageSource is = new ImageSource(_sourceFile, pipe);
-
-                Thread thread = new Thread(is);
-                thread.run();
 
                 break;
             }
