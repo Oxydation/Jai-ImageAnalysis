@@ -106,8 +106,7 @@ public class ImageProcessor {
             }
 
             case THREADED: {
-
-                int bufferSize = 50;
+                int bufferSize = 100;
                 BufferedSyncPipe<PicturePack> pipe = new BufferedSyncPipe<>(bufferSize);
                 ImageSource imageSource = new ImageSource(_sourceFile, pipe, 50);
                 imageSource.setIsFlatRate(true);
@@ -136,7 +135,7 @@ public class ImageProcessor {
                 qsCentroidsFilter.setxTolerance(tolerance);
                 qsCentroidsFilter.setyTolerance(tolerance);
 
-                DataSink dataSink = new DataSink("output.txt", pipe6);
+                DataSink dataSink = new DataSink("output.txt", pipe6, 0);
 
                 // Create and start threads
                 Thread threadDataSink = new Thread(dataSink);
