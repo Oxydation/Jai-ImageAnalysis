@@ -33,7 +33,7 @@ public class MedianFilter extends DataTransformationFilter<PicturePack>{
         Median median = new Median(_medianRadius);
         median.applyInPlace(entity.getEdited());
 
-        ImageProcessor.showImage(entity.getEdited(), "Median");
+        // ImageProcessor.showImage(entity.getEdited(), "Median");
     }
 
     public int getMedianRadius() {

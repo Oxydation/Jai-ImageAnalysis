@@ -15,8 +15,9 @@ public class ImageSource implements Readable<PicturePack>, Runnable {
     private String _file;
     private Writeable<PicturePack> _writeable;
     private boolean _isFlatRate;
+    private int _limit = 1; // 1 ... only one time, 0 .. unlimited, >1 as given
 
-    public ImageSource(String file) {
+    public ImageSource(String file, int limit) {
         _file = file;
     }
 
@@ -25,6 +26,11 @@ public class ImageSource implements Readable<PicturePack>, Runnable {
         _file = file;
     }
 
+    public ImageSource(String file, Writeable<PicturePack> output, int limit) {
+        _writeable = output;
+        _file = file;
+        _limit = limit;
+    }
 
     @Override
     public PicturePack read() throws StreamCorruptedException {
@@ -38,8 +44,11 @@ public class ImageSource implements Readable<PicturePack>, Runnable {
             PicturePack input = null;
             try {
                 if (isFlatRate()) {
-                    while ((input = read()) != null) {
+                    int counter = 0;
+                    while ((input = read()) != null && counter < getLimit()) {
+                        System.out.println("Source: read input and write output");
                         _writeable.write(input);
+                        counter++;
                     }
                 } else {
                     _writeable.write(read());
@@ -49,6 +58,14 @@ public class ImageSource implements Readable<PicturePack>, Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int getLimit() {
+        return _limit;
+    }
+
+    public void setLimit(int limit) {
+        _limit = limit;
     }
 
     public String getFile() {

@@ -36,7 +36,7 @@ public class ThresholdFilter extends DataTransformationFilter<PicturePack> {
         Invert invert = new Invert();
         invert.applyInPlace(entity.getEdited());
 
-        ImageProcessor.showImage(entity.getEdited(), "Threshold");
+        //ImageProcessor.showImage(entity.getEdited(), "Threshold");
 
     }
 }

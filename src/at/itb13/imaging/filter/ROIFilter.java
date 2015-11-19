@@ -33,6 +33,6 @@ public class ROIFilter extends DataTransformationFilter<PicturePack> {
 
         entity.setEdited(roi);
         entity.setCoordinate(new Coordinate(0, 60));
-        ImageProcessor.showImage(entity.getEdited(), "ROI");
+        //ImageProcessor.showImage(entity.getEdited(), "ROI");
     }
 }

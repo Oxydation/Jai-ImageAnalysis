@@ -11,6 +11,6 @@ public class Main {
     public static void main(String[] args) {
 
         ImageProcessor imageProcessor = new ImageProcessor("loetstellen.jpg");
-        imageProcessor.processImage(Mode.PUSH, true);
+        imageProcessor.processImage(Mode.THREADED);
     }
 }
