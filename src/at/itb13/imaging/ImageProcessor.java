@@ -21,6 +21,9 @@ import java.util.LinkedList;
 public class ImageProcessor {
 
     private String _sourceFile;
+    private static long  _millis;
+
+    private int _limit = 1;
 
     public ImageProcessor() {
 
@@ -31,6 +34,8 @@ public class ImageProcessor {
     }
 
     public void processImage(Mode mode) {
+
+        _millis = System.currentTimeMillis();
 
         LinkedList<Coordinate> nominalCoordiantes = new LinkedList<>();
         nominalCoordiantes.add(new Coordinate(10, 80));
@@ -46,7 +51,8 @@ public class ImageProcessor {
             case PULL: {
 
                 // Pull from source to target
-                ImageSource is = new ImageSource(_sourceFile, 1);
+                ImageSource is = new ImageSource(_sourceFile, _limit);
+
                 Pipe<PicturePack> pipe = new Pipe<>(is);
                 ROIFilter roiFilter = new ROIFilter((Readable<PicturePack>) pipe);
                 Pipe<PicturePack> pipe1 = new Pipe<>((Readable<PicturePack>) roiFilter);
@@ -66,7 +72,7 @@ public class ImageProcessor {
                 qsCentroidsFilter.setyTolerance(tolerance);
 
                 Pipe<LinkedList<Coordinate>> pipe6 = new Pipe<>((Readable<LinkedList<Coordinate>>) qsCentroidsFilter);
-                DataSink dataSink = new DataSink("output.txt", pipe6);
+                DataSink dataSink = new DataSink("output.txt", pipe6, _limit);
 
                 Thread thread = new Thread(dataSink);
                 thread.start();
@@ -78,6 +84,7 @@ public class ImageProcessor {
                 DataSink dataSink = null;
                 try {
                     dataSink = new DataSink("output.txt");
+                    dataSink.setLimit(_limit);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -98,7 +105,7 @@ public class ImageProcessor {
                 Pipe<PicturePack> pipe1 = new Pipe<>((Writeable<PicturePack>) thresholdFilter);
                 ROIFilter roiFilter = new ROIFilter((Writeable<PicturePack>) pipe1);
                 Pipe<PicturePack> pipe = new Pipe<>((Writeable<PicturePack>) roiFilter);
-                ImageSource is = new ImageSource(_sourceFile, pipe);
+                ImageSource is = new ImageSource(_sourceFile, pipe,_limit);
 
                 Thread thread = new Thread(is);
                 thread.run();
@@ -108,8 +115,7 @@ public class ImageProcessor {
             case THREADED: {
                 int bufferSize = 100;
                 BufferedSyncPipe<PicturePack> pipe = new BufferedSyncPipe<>(bufferSize);
-                ImageSource imageSource = new ImageSource(_sourceFile, pipe, 50);
-                imageSource.setIsFlatRate(true);
+                ImageSource imageSource = new ImageSource(_sourceFile, pipe, _limit);
 
                 BufferedSyncPipe<PicturePack> pipe1 = new BufferedSyncPipe<>(bufferSize);
 
@@ -166,6 +172,22 @@ public class ImageProcessor {
 
     public void setSourceFile(String sourceFile) {
         _sourceFile = sourceFile;
+    }
+
+    public static long getMillis() {
+        return _millis;
+    }
+
+    public int getLimit() {
+        return _limit;
+    }
+
+    public void setLimit(int limit) {
+        _limit = limit;
+    }
+
+    public static void setMillis(long millis) {
+        _millis = millis;
     }
 
     public static void showImage(FastBitmap fastBitmap) {

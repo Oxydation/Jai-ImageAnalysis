@@ -1,5 +1,6 @@
 package at.itb13.imaging.filter;
 
+import at.itb13.imaging.ImageProcessor;
 import at.itb13.imaging.entities.Coordinate;
 import at.itb13.pipesandfilter.interfaces.Readable;
 import at.itb13.pipesandfilter.interfaces.Writeable;
@@ -15,7 +16,7 @@ public class DataSink implements Writeable<LinkedList<Coordinate>>, Runnable {
     public String _targetFile;
     public Readable<LinkedList<Coordinate>> _readable;
     private static int _counter;
-    private int _limit = 0; // 0... unlimited, 1 .. only one, ... etc
+    private int _limit = 1; // 0... unlimited, 1 .. only one, ... etc
 
     @Override
     public void run() {
@@ -24,6 +25,7 @@ public class DataSink implements Writeable<LinkedList<Coordinate>>, Runnable {
             while((input = _readable.read()) != null && input.size() > 0 && (_counter < _limit || _limit == 0)){
                 write(input);
             }
+            System.out.println(String.format("Duration: %fs", (System.currentTimeMillis() - ImageProcessor.getMillis())/1000.0));
         } catch (StreamCorruptedException e) {
             e.printStackTrace();
         }
