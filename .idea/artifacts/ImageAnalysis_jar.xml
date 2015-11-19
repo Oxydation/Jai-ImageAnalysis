@@ -14,6 +14,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Signal.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Statistics.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/catalano/Catalano.Vision.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons-cli-1.3.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
