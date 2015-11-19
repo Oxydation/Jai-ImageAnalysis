@@ -21,7 +21,7 @@ public class DataSink implements Writeable<LinkedList<Coordinate>>, Runnable {
     public void run() {
         try {
             LinkedList<Coordinate> input = null;
-            while((input = _readable.read()) != null && (_counter < _limit || _limit == 0)){
+            while((input = _readable.read()) != null && input.size() > 0 && (_counter < _limit || _limit == 0)){
                 write(input);
             }
         } catch (StreamCorruptedException e) {
