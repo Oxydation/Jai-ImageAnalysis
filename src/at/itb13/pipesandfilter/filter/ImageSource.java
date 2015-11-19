@@ -44,7 +44,7 @@ public class ImageSource implements Readable<PicturePack>, Runnable {
             try {
                 int counter = 0;
                 while ((input = read()) != null && (counter++ < getLimit() || getLimit() == 0)) {
-                    System.out.println("Source: read input and write output");
+                    //System.out.println("Source: read input and write output");
                     _writeable.write(input);
                 }
                 _writeable.write(null);

@@ -54,7 +54,7 @@ public class DataSink implements Writeable<LinkedList<Coordinate>>, Runnable {
         try {
             String fileName = String.format("%s%s", _counter++, _targetFile);
             _writer = new FileWriter(new File(fileName));
-            System.out.println("Writing quality check to file: " + fileName);
+           // System.out.println("Writing quality check to file: " + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
